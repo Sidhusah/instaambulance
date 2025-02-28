@@ -45,6 +45,16 @@ class RidingRecord extends FirestoreRecord {
   LatLng? get driverLocation => _driverLocation;
   bool hasDriverLocation() => _driverLocation != null;
 
+  // "duration" field.
+  String? _duration;
+  String get duration => _duration ?? '';
+  bool hasDuration() => _duration != null;
+
+  // "distance" field.
+  String? _distance;
+  String get distance => _distance ?? '';
+  bool hasDistance() => _distance != null;
+
   void _initializeFields() {
     _userRef = snapshotData['user_ref'] as DocumentReference?;
     _driverRef = snapshotData['driver_ref'] as DocumentReference?;
@@ -52,6 +62,8 @@ class RidingRecord extends FirestoreRecord {
     _status = snapshotData['status'] as String?;
     _userLocation = snapshotData['user_location'] as LatLng?;
     _driverLocation = snapshotData['driver_location'] as LatLng?;
+    _duration = snapshotData['duration'] as String?;
+    _distance = snapshotData['distance'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -94,6 +106,8 @@ Map<String, dynamic> createRidingRecordData({
   String? status,
   LatLng? userLocation,
   LatLng? driverLocation,
+  String? duration,
+  String? distance,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -103,6 +117,8 @@ Map<String, dynamic> createRidingRecordData({
       'status': status,
       'user_location': userLocation,
       'driver_location': driverLocation,
+      'duration': duration,
+      'distance': distance,
     }.withoutNulls,
   );
 
@@ -119,7 +135,9 @@ class RidingRecordDocumentEquality implements Equality<RidingRecord> {
         e1?.created == e2?.created &&
         e1?.status == e2?.status &&
         e1?.userLocation == e2?.userLocation &&
-        e1?.driverLocation == e2?.driverLocation;
+        e1?.driverLocation == e2?.driverLocation &&
+        e1?.duration == e2?.duration &&
+        e1?.distance == e2?.distance;
   }
 
   @override
@@ -129,7 +147,9 @@ class RidingRecordDocumentEquality implements Equality<RidingRecord> {
         e?.created,
         e?.status,
         e?.userLocation,
-        e?.driverLocation
+        e?.driverLocation,
+        e?.duration,
+        e?.distance
       ]);
 
   @override

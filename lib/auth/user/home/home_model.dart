@@ -11,6 +11,8 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
 
   ///  State fields for stateful widgets in this page.
 
+  // Stores action output result for [Custom Action - enableGPSAndGetLocation] action in Button widget.
+  List<double>? geolocation;
   // Stores action output result for [Backend Call - Create Document] action in Button widget.
   RidingRecord? createdridedoc;
 

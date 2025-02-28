@@ -36,3 +36,13 @@ List<LatLng> listlocations(
   List<LatLng> locations = [userlocation, driverloaction];
   return locations;
 }
+
+LatLng returnlocation(String location) {
+  // remove brackets, degree, direction eg. [184.200 N , 207.980 W] return as 184.200,207.980 as latlng remove unwanted lettes word symbols and brackets location arguments can be in decimal with strings
+  // remove brackets, degree, direction and return as latlng
+  String cleanedLocation = location.replaceAll(RegExp(r'[^\d.,]'), '');
+  List<String> coordinates = cleanedLocation.split(',');
+  double latitude = double.parse(coordinates[0]);
+  double longitude = double.parse(coordinates[1]);
+  return LatLng(latitude, longitude);
+}

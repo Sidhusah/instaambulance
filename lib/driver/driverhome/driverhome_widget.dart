@@ -1,8 +1,11 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/custom_code/actions/index.dart' as actions;
+import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/permissions_util.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +37,7 @@ class _DriverhomeWidgetState extends State<DriverhomeWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await requestPermission(locationPermission);
+      _model.geo = await actions.enableGPSAndGetLocation();
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
@@ -491,6 +495,21 @@ class _DriverhomeWidgetState extends State<DriverhomeWidget> {
                                                 await getCurrentUserLocation(
                                                     defaultLocation:
                                                         LatLng(0.0, 0.0));
+                                            _model.api =
+                                                await MapboxapiCall.call(
+                                              userLocation: functions
+                                                  .returnlocation(
+                                                      columnRidingRecord
+                                                          .userLocation!
+                                                          .toString())
+                                                  .toString(),
+                                              driverLocation: functions
+                                                  .returnlocation(
+                                                      columnRidingRecord
+                                                          .driverLocation!
+                                                          .toString())
+                                                  .toString(),
+                                            );
 
                                             await columnRidingRecord.reference
                                                 .update(createRidingRecordData(
@@ -498,6 +517,12 @@ class _DriverhomeWidgetState extends State<DriverhomeWidget> {
                                                   currentUserLocationValue,
                                               driverRef: currentUserReference,
                                               status: 'Accepted',
+                                              duration: MapboxapiCall.duration(
+                                                (_model.api?.jsonBody ?? ''),
+                                              ).toString(),
+                                              distance: MapboxapiCall.distance(
+                                                (_model.api?.jsonBody ?? ''),
+                                              ).toString(),
                                             ));
 
                                             context.pushNamed(
@@ -514,6 +539,8 @@ class _DriverhomeWidgetState extends State<DriverhomeWidget> {
                                                 ),
                                               }.withoutNulls,
                                             );
+
+                                            safeSetState(() {});
                                           },
                                           text: 'Show',
                                           options: FFButtonOptions(

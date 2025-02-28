@@ -3,6 +3,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/permissions_util.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
@@ -273,37 +274,44 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                     LatLng(0.0, 0.0));
                                         await requestPermission(
                                             locationPermission);
+                                        _model.geolocation = await actions
+                                            .enableGPSAndGetLocation();
+                                        if (_model.geolocation?.firstOrNull !=
+                                            null) {
+                                          var ridingRecordReference =
+                                              RidingRecord.collection.doc();
+                                          await ridingRecordReference
+                                              .set(createRidingRecordData(
+                                            userRef: currentUserReference,
+                                            created: getCurrentTimestamp,
+                                            status: 'pending',
+                                            userLocation:
+                                                currentUserLocationValue,
+                                          ));
+                                          _model.createdridedoc =
+                                              RidingRecord.getDocumentFromData(
+                                                  createRidingRecordData(
+                                                    userRef:
+                                                        currentUserReference,
+                                                    created:
+                                                        getCurrentTimestamp,
+                                                    status: 'pending',
+                                                    userLocation:
+                                                        currentUserLocationValue,
+                                                  ),
+                                                  ridingRecordReference);
 
-                                        var ridingRecordReference =
-                                            RidingRecord.collection.doc();
-                                        await ridingRecordReference
-                                            .set(createRidingRecordData(
-                                          userRef: currentUserReference,
-                                          created: getCurrentTimestamp,
-                                          status: 'pending',
-                                          userLocation:
-                                              currentUserLocationValue,
-                                        ));
-                                        _model.createdridedoc =
-                                            RidingRecord.getDocumentFromData(
-                                                createRidingRecordData(
-                                                  userRef: currentUserReference,
-                                                  created: getCurrentTimestamp,
-                                                  status: 'pending',
-                                                  userLocation:
-                                                      currentUserLocationValue,
-                                                ),
-                                                ridingRecordReference);
-
-                                        context.pushNamed(
-                                          RequestWaitingWidget.routeName,
-                                          queryParameters: {
-                                            'riderdoc': serializeParam(
-                                              _model.createdridedoc?.reference,
-                                              ParamType.DocumentReference,
-                                            ),
-                                          }.withoutNulls,
-                                        );
+                                          context.pushNamed(
+                                            RequestWaitingWidget.routeName,
+                                            queryParameters: {
+                                              'riderdoc': serializeParam(
+                                                _model
+                                                    .createdridedoc?.reference,
+                                                ParamType.DocumentReference,
+                                              ),
+                                            }.withoutNulls,
+                                          );
+                                        }
 
                                         safeSetState(() {});
                                       },

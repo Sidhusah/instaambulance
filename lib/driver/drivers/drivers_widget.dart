@@ -4,9 +4,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import '/flutter_flow/permissions_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'drivers_model.dart';
 export 'drivers_model.dart';
@@ -38,18 +36,6 @@ class _DriversWidgetState extends State<DriversWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => DriversModel());
-
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      currentUserLocationValue =
-          await getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0));
-      await requestPermission(locationPermission);
-      _model.addToLocation(currentUserLocationValue!);
-      safeSetState(() {});
-      _model.addToLocation(
-          functions.newCustomFunction('27.037573969209788, 84.9012233'));
-      safeSetState(() {});
-    });
 
     getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0), cached: true)
         .then((loc) => safeSetState(() => currentUserLocationValue = loc));
@@ -244,7 +230,7 @@ class _DriversWidgetState extends State<DriversWidget> {
                                                     .fromSTEB(
                                                         5.0, 0.0, 0.0, 0.0),
                                                 child: Text(
-                                                  '4 mins away',
+                                                  '${driversRidingRecord.distance}M',
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .bodyMedium

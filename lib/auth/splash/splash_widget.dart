@@ -1,7 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_video_player.dart';
-import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/permissions_util.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,6 @@ class _SplashWidgetState extends State<SplashWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await requestPermission(locationPermission);
-      await actions.newCustomAction();
       await Future.delayed(const Duration(milliseconds: 3000));
 
       context.goNamed(LoginPageWidget.routeName);

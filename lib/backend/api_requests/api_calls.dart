@@ -52,6 +52,37 @@ class GetDirectionsCall {
   }
 }
 
+class MapboxapiCall {
+  static Future<ApiCallResponse> call({
+    String? driverLocation = '',
+    String? userLocation = '',
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'mapboxapi',
+      apiUrl:
+          'https://api.mapbox.com/directions/v5/mapbox/driving/${driverLocation};${userLocation}?alternatives=true&annotations=distance%2Cduration&geometries=polyline&overview=full&steps=false&access_token=pk.eyJ1Ijoic2lkZGhhbnRzYWgiLCJhIjoiY203YWo3eHBqMDUyMDJyczdmcXdoZGpiYSJ9.zvJRbExNDGyT3gSVC679qw',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  static dynamic duration(dynamic response) => getJsonField(
+        response,
+        r'''$.routes[:].duration''',
+      );
+  static dynamic distance(dynamic response) => getJsonField(
+        response,
+        r'''$.routes[:].distance''',
+      );
+}
+
 class ApiPagingParams {
   int nextPageNumber = 0;
   int numItems = 0;

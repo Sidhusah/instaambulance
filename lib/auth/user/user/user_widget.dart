@@ -234,7 +234,7 @@ class _UserWidgetState extends State<UserWidget> {
                                                     .fromSTEB(
                                                         5.0, 0.0, 0.0, 0.0),
                                                 child: Text(
-                                                  '4 mins away',
+                                                  '${userRidingRecord.distance}M',
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .bodyMedium
